@@ -1,12 +1,16 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "nl.andrewlalis.speed_carts.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "AbstractMinecartMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "AbstractMinecartMixin"
+  ],
+  "server": [
+    "AbstractMinecartMixin"
   ],
   "injectors": {
     "defaultRequire": 1
