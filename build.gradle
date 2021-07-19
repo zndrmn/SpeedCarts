@@ -27,8 +27,14 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
+	// Jackson API for config file parsing.
+	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.12.4'
+	include group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.12.4'
+	// Include Jackson dependencies since include directive is not transitive:
+	include group: 'org.yaml', name: 'snakeyaml', version: '1.27'
+	include group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.4'
+	include group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.4'
+	include group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.4'
 }
 
 processResources {

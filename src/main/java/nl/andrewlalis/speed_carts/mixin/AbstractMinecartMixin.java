@@ -19,6 +19,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import nl.andrewlalis.speed_carts.SpeedCarts;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Mixin which overrides the default minecart behavior so that we can define a
@@ -36,9 +38,16 @@ import java.util.List;
  */
 @Mixin(AbstractMinecartEntity.class)
 public abstract class AbstractMinecartMixin extends Entity {
-	private static final double DEFAULT_SPEED = 8.0;
-	private static final double MIN_SPEED = 1.0;
-	private static final double MAX_SPEED = 128.0;
+	private static final double DEFAULT_SPEED = SpeedCarts.config.getDefaultSpeed();
+	private static final double MIN_SPEED = SpeedCarts.config.getMinimumSpeed();
+	private static final double MAX_SPEED = SpeedCarts.config.getMaximumSpeed();
+	private static final Pattern SIGN_PATTERN = Pattern.compile(SpeedCarts.config.getSignRegex());
+
+	/**
+	 * Time in game ticks, to wait before attempting to update the cart's speed
+	 * from the same position, after that block/sign has already updated the
+	 * cart's speed just before.
+	 */
 	private static final long SPEED_UPDATE_COOLDOWN = 20 * 3;
 
 	/**
@@ -130,6 +139,9 @@ public abstract class AbstractMinecartMixin extends Entity {
 	private boolean updateSpeedForSign(SignBlockEntity sign) {
 		Text text = sign.getTextOnRow(0, false);
 		String s = text.asString();
+		if (!SIGN_PATTERN.matcher(s).matches()) {
+			return false;
+		}
 		try {
 			double speed = Double.parseDouble(s);
 			if (speed >= MIN_SPEED && speed <= MAX_SPEED) {
