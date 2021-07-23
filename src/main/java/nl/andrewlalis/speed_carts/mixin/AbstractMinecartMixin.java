@@ -315,7 +315,6 @@ public abstract class AbstractMinecartMixin extends Entity {
 		w = this.getMaxOffRailSpeed();
 		velocity = this.getVelocity();
 		Vec3d movement = new Vec3d(MathHelper.clamp(v * velocity.x, -w, w), 0.0D, MathHelper.clamp(v * velocity.z, -w, w));
-		System.out.println("Moving: " + movement + ", Max speed: " + w + ", Z velocity: " + velocity.z);
 		this.move(MovementType.SELF, movement);
 		if (vec3i.getY() != 0 && MathHelper.floor(this.getX()) - pos.getX() == vec3i.getX() && MathHelper.floor(this.getZ()) - pos.getZ() == vec3i.getZ()) {
 			this.setPosition(this.getX(), this.getY() + (double)vec3i.getY(), this.getZ());
