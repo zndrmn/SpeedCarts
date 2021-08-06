@@ -14,7 +14,7 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -156,7 +156,7 @@ public abstract class AbstractMinecartMixin extends Entity {
 				if (this.hasPlayerRider()) {
 					PlayerEntity player = (PlayerEntity) this.getFirstPassenger();
 					if (player != null) {
-						player.playSound(new SoundEvent(new Identifier("block.note_block.bell")), SoundCategory.PLAYERS, 1.0f, 1.0f);
+						player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL, SoundCategory.PLAYERS, 1.0f, 1.0f);
 					}
 				}
 				return true;
