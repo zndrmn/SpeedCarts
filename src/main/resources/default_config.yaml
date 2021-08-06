@@ -9,7 +9,6 @@ defaultSpeed: 8
 minimumSpeed: 1
 
 # The maximum allowable speed limit that can be set, in meters per second.
-# Note: when a player is riding the cart, it cannot exceed 32 m/s regardless of the maximum set here.
 maximumSpeed: 128
 
 # The regular expression that's used to determine if a sign should affect the cart's speed.
