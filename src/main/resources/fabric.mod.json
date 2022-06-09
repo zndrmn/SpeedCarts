@@ -23,7 +23,7 @@
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "speed-carts.mixins.json"
   ],
 
   "depends": {
