@@ -39,6 +39,7 @@ public class Config {
 
 	private void ensureConfigExists() throws IOException {
 		if (!Files.exists(CONFIG_FILE)) {
+			Files.createDirectories(CONFIG_FILE.getParent());
 			OutputStream out = Files.newOutputStream(CONFIG_FILE);
 			InputStream defaultConfigInputStream = SpeedCarts.class.getClassLoader().getResourceAsStream("default_config.yaml");
 			if (defaultConfigInputStream == null) {

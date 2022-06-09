@@ -18,7 +18,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import nl.andrewlalis.speed_carts.SpeedCarts;
@@ -77,9 +76,9 @@ public abstract class AbstractMinecartMixin extends Entity {
 	}
 
 	@Shadow
-	protected abstract double getMaxOffRailSpeed();
+	protected abstract double getMaxSpeed();
 
-	@Inject(at = @At("HEAD"), method = "getMaxOffRailSpeed", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getMaxSpeed", cancellable = true)
 	public void getMaxOffRailSpeedOverwrite(CallbackInfoReturnable<Double> cir) {
 		cir.setReturnValue(this.maxSpeedBps / 20.0);
 	}
@@ -122,8 +121,7 @@ public abstract class AbstractMinecartMixin extends Entity {
 
 		for (BlockPos position : this.getPositionsToCheck(pos)) {
 			BlockEntity blockEntity = this.world.getBlockEntity(position);
-			if (blockEntity instanceof SignBlockEntity) {
-				SignBlockEntity sign = (SignBlockEntity) blockEntity;
+			if (blockEntity instanceof SignBlockEntity sign) {
 				if (!sign.getPos().equals(this.lastUpdatedFrom) || this.world.getTime() > this.lastSpeedUpdate + SPEED_UPDATE_COOLDOWN) {
 					BlockState state = this.world.getBlockState(position);
 					Direction dir = (Direction) state.getEntries().get(Properties.HORIZONTAL_FACING);
@@ -143,7 +141,7 @@ public abstract class AbstractMinecartMixin extends Entity {
 	 */
 	private boolean updateSpeedForSign(SignBlockEntity sign) {
 		Text text = sign.getTextOnRow(0, false);
-		String s = text.asString();
+		String s = text.getString();
 		if (!SIGN_PATTERN.matcher(s).matches()) {
 			return false;
 		}
@@ -312,7 +310,7 @@ public abstract class AbstractMinecartMixin extends Entity {
 		f = q + i * x;
 		this.setPosition(d, e, f);
 		v = this.hasPassengers() ? 0.75D : 1.0D;
-		w = this.getMaxOffRailSpeed();
+		w = this.getMaxSpeed();
 		velocity = this.getVelocity();
 		Vec3d movement = new Vec3d(MathHelper.clamp(v * velocity.x, -w, w), 0.0D, MathHelper.clamp(v * velocity.z, -w, w));
 		this.move(MovementType.SELF, movement);
